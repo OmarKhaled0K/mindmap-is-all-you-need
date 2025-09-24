@@ -1,39 +1,26 @@
 import streamlit as st
 import json
+import requests
+
+# FastAPI backend URL
+BACKEND_URL = "http://localhost:8000"
 
 # Initialize session state for tracking expanded nodes
 if 'expanded_nodes' not in st.session_state:
     st.session_state.expanded_nodes = set()
 
-# Your JSON data
-mindmap_data = {
-    "name": "LLM",
-    "children": [
-        {
-            "name": "1. Building an LLM",
-            "children": [
-                { "name": "1. Data preparation and sampling" },
-                { "name": "2. Choosing Transformer type" },
-                { "name": "3. Attention mechanism" },
-                { "name": "4. LLM Architecture" }
-            ]
-        },
-        { 
-            "name": "2. Foundation model",
-            "children": [
-                { "name": "1. Pre-training" },
-                { "name": "2. Evaluation" }
-            ]
-        },
-        { 
-            "name": "3. Fine-tuned model",
-            "children": [
-                { "name": "1. Supervised fine-tuning" },
-                { "name": "2. Reinforcement learning with human feedback (RLHF)" }
-            ] 
-        }
-    ]
-}
+def fetch_mindmap_data():
+    """Fetch mindmap data from the FastAPI backend"""
+    try:
+        response = requests.get(f"{BACKEND_URL}/mindmap")
+        response.raise_for_status()  # Raise an exception for bad status codes
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Failed to fetch mindmap data: {str(e)}")
+        return None
+
+# Fetch mindmap data from backend
+mindmap_data = fetch_mindmap_data()
 
 def has_children(node):
     """Check if a node has children"""
@@ -103,6 +90,11 @@ def display_node(node, level=0, parent_name=None):
 def main():
     st.title("🧠 Interactive Mindmap: Large Language Models (LLM)")
     st.markdown("Click on the ➕/➖ buttons to expand/collapse sections")
+    
+    # Check if we have valid mindmap data
+    if mindmap_data is None:
+        st.error("Unable to load mindmap data. Please check if the backend server is running.")
+        return
     
     # Display the root node with special styling
     st.markdown(f"<h2 style='text-align: center; color: #1f77b4;'>🎯 {mindmap_data['name']}</h2>", 
