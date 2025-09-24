@@ -56,7 +56,7 @@ def display_node(node, level=0, parent_name=None):
     if level > 0:
         arrow = "↳ "
     
-    col1, col2 = st.columns([ level if level !=0 else 1, 1])
+    col1, col2 = st.columns([ level if level !=0 else 1, 5])
     
     with col2:
         # Create a unique key for the button
