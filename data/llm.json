@@ -1,0 +1,28 @@
+{
+  "name": "LLM",
+  "children": [
+    {
+      "name": "1. Building an LLM",
+      "children": [
+        { "name": "1. Data preparation and sampling" },
+        { "name": "2. Choosing Transformer type" },
+        { "name": "3. Attention mechanism" },
+        { "name": "4. LLM Architecture" }
+      ]
+    },
+    { 
+        "name": "2. Foundation model" ,
+        "children": [
+          { "name": "1. Pre-training" },
+          { "name": "2. Evaluation" }
+        ]
+    },
+    { 
+        "name": "3. Fine-tuned model",
+        "children": [
+          { "name": "1. Supervised fine-tuning" },
+          { "name": "2. Reinforcement learning with human feedback (RLHF)" }
+        ] 
+    }
+  ]
+}
